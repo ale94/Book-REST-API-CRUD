@@ -1,6 +1,7 @@
 package com.alejandro.book_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,6 +37,7 @@ public class AuthorEntity implements Serializable {
     private String email;
     private String website;
 
+    @JsonIgnoreProperties({"author", "hibernateLazyInitializer", "handler"})
     @OneToMany(
         fetch = FetchType.LAZY,
         cascade = CascadeType.ALL,
