@@ -2,6 +2,7 @@ package com.alejandro.book_api.controllers;
 
 import com.alejandro.book_api.dto.BookRequest;
 import com.alejandro.book_api.entities.BookEntity;
+import com.alejandro.book_api.exceptions.NotFoundException;
 import com.alejandro.book_api.services.BookService;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,7 @@ public class BookController {
     public ResponseEntity<?> show(@PathVariable Long id) {
         Optional<BookEntity> book = service.findById(id);
         if (book.isEmpty()) {
-            //throw new UserNotFoundException("users", "id", id);
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("books", "id", id);
         }
         return ResponseEntity.ok(book);
     }
@@ -41,11 +41,11 @@ public class BookController {
     @PostMapping("/books/authors/{authorId}")
     public ResponseEntity<?> create(@RequestBody BookRequest request, @PathVariable Long authorId) {
         var book = service.save(request, authorId);
-        if (book != null) {
-            return ResponseEntity.status(HttpStatus.CREATED)
-                .body(book);
+        if (book == null) {
+            throw new NotFoundException("books", "id", book.getId());
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(book);
     }
 
     @PutMapping("/books/{bookId}/authors/{authorId}")
@@ -53,8 +53,7 @@ public class BookController {
         @PathVariable Long authorId) {
         Optional<BookEntity> searchedBook = service.findById(bookId);
         if (searchedBook.isEmpty()) {
-            //throw new UserNotFoundException("users", "id", id);
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("books", "id", bookId);
         }
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(service.update(request, bookId, authorId));
@@ -64,8 +63,7 @@ public class BookController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<BookEntity> book = service.findById(id);
         if (book.isEmpty()) {
-            //throw new UserNotFoundException("users", "id", id);
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("books", "id", id);
         }
         service.remove(id);
         return ResponseEntity.noContent().build();

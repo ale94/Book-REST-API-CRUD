@@ -2,6 +2,7 @@ package com.alejandro.book_api.controllers;
 
 import com.alejandro.book_api.dto.AuthorRequest;
 import com.alejandro.book_api.entities.AuthorEntity;
+import com.alejandro.book_api.exceptions.NotFoundException;
 import com.alejandro.book_api.services.AuthorService;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,7 @@ public class AuthorController {
     public ResponseEntity<?> show(@PathVariable Long id) {
         Optional<AuthorEntity> author = service.findById(id);
         if (author.isEmpty()) {
-            //throw new UserNotFoundException("users", "id", id);
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("authors", "id", id);
         }
         return ResponseEntity.ok(author);
     }
@@ -48,8 +48,7 @@ public class AuthorController {
     public ResponseEntity<?> update(@RequestBody AuthorRequest author, @PathVariable Long id) {
         Optional<AuthorEntity> searchedAuthor = service.findById(id);
         if (searchedAuthor.isEmpty()) {
-            //throw new UserNotFoundException("users", "id", id);
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("authors", "id", id);
         }
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(service.update(author, id));
@@ -59,8 +58,7 @@ public class AuthorController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<AuthorEntity> author = service.findById(id);
         if (author.isEmpty()) {
-            //throw new UserNotFoundException("users", "id", id);
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("authors", "id", id);
         }
         service.remove(id);
         return ResponseEntity.noContent().build();
