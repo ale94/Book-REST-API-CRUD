@@ -1,5 +1,5 @@
 # API REST para Gestión de Libros y Autores
-### Spring Boot, JPA, Web, Error Handling, DTO, Swagger, Rest API, H2 Console
+### Spring Boot, JPA, Web, Error Handling, DTO, Swagger, Rest API, H2 Console, Lombok
 
 ## Introducción
 API REST que relaciona libros y autores proporciona una interfaz para interactuar con una base de datos de libros y autores a través de solicitudes HTTP. Ofrece endpoints para operaciones como obtener una lista de libros y autores, recuperar información detallada de libros y autores individuales, crear nuevos libros, actualizar registros existentes y eliminar libros. Esto permite a los desarrolladores gestionar la relación entre libros y autores de manera eficiente a través de servicios web RESTful.
@@ -39,151 +39,161 @@ Para utilizar la API REST en tu entorno local, sigue estos pasos:
 
 ```json
 [
-    {
-        "id": 1,
-        "firstName": "Andrés",
-        "lastName": "Guzmán",
-        "email": "profesor@bolsadeideas.com",
-        "createAt": "2018-01-01"
-    },
-    {
-        "id": 2,
-        "firstName": "Mr. John",
-        "lastName": "Doe",
-        "email": "john.doe@gmail.com",
-        "createAt": "2018-01-02"
-    },
-    {
-        "id": 3,
-        "firstName": "Linus",
-        "lastName": "Torvalds",
-        "email": "linus.torvalds@gmail.com",
-        "createAt": "2018-01-03"
+  {
+    "id": 1,
+    "title": "Harry Potter y la piedra filosofal",
+    "isbn": "isbn1",
+    "publicationDate": "1997-06-26",
+    "publisher": "Bloomsbury",
+    "price": 8000,
+    "quantityInStock": 1000,
+    "coverImageURL": "www.imagen.com.ar",
+    "description": "Se narran los primeros pasos de Harry en el mundo de la magia, así como su primer enfrentamiento con Voldemort, quien en su búsqueda de la inmortalidad quiere obtener el poder de la piedra filosofal y posee al profesor de defensa contra las artes oscuras.",
+    "genre": "fantastic",
+    "languaje": "english",
+    "author": {
+      "id": 1,
+      "firstName": "Joanne",
+      "lastName": "Rowling",
+      "dateOfBirth": "1965-07-31",
+      "nationality": "Reino Unido",
+      "biography": "Es una escritora, productora de cine y guionista británica, conocida por ser la autora de la serie de libros Harry Potter, que han superado los quinientos millones de ejemplares vendidos.",
+      "email": "info@jkrowling.com",
+      "website": "www.jkrowling.com"
     }
+  },
+  {
+    "id": 2,
+    "title": "It",
+    "isbn": "isbn2",
+    "publicationDate": "1986-09-15",
+    "publisher": "Signet books",
+    "price": 10000,
+    "quantityInStock": 650,
+    "coverImageURL": "www.imagen.com.ar",
+    "description": "Cuenta la historia, en un juego de correspondencias con el pasado y el presente, de un grupo de siete amigos que son perseguidos por una entidad sobrenatural, al que llaman «Eso».",
+    "genre": "terror",
+    "languaje": "english",
+    "author": {
+      "id": 2,
+      "firstName": "Stephen Edwin",
+      "lastName": "King",
+      "dateOfBirth": "1947-09-21",
+      "nationality": "EEUU",
+      "biography": "Es un escritor estadounidense de novelas de terror, ficción sobrenatural, misterio, ciencia ficción y literatura fantástica.",
+      "email": "contacto@stephenking.es",
+      "website": "www.stephenking.com"
+    }
+  },
+  {
+    "id": 3,
+    "title": "Crónica de una muerte anunciada",
+    "isbn": "isbn3",
+    "publicationDate": "1981-09-02",
+    "publisher": "Cronica",
+    "price": 12000,
+    "quantityInStock": 250,
+    "coverImageURL": "www.imagen.com.ar",
+    "description": "Relata en forma de reconstrucción casi periodística el asesinato de Santiago Nasar a manos de los gemelos Vicario",
+    "genre": "police",
+    "languaje": "spanish",
+    "author": {
+      "id": 3,
+      "firstName": "Gabriel",
+      "lastName": "García Márquez",
+      "dateOfBirth": "1927-03-06",
+      "nationality": "Colombia",
+      "biography": "Fue un escritor y periodista colombiano. Reconocido principalmente por sus novelas y cuentos, también escribió narrativa de no ficción, discursos, reportajes, críticas cinematográficas y memorias",
+      "email": "contacto@garciamarquez.com",
+      "website": "www.garciamarquez.com"
+    }
+  }
 ]
 ```
 
-### Listar clientes por paginación
+### Obtener book por ID
 
-- **URL**: `/api/customers/page/:page`
-- **Método**: `GET`
-- **Respuesta exitosa**:
-
-```json
-{
-    "content": [
-    {
-        "id": 1,
-        "firstName": "Andrés",
-        "lastName": "Guzmán",
-        "email": "profesor@bolsadeideas.com",
-        "createAt": "2018-01-01"
-    },
-    {
-        "id": 2,
-        "firstName": "Mr. John",
-        "lastName": "Doe",
-        "email": "john.doe@gmail.com",
-        "createAt": "2018-01-02"
-    },
-    {
-        "id": 3,
-        "firstName": "Linus",
-        "lastName": "Torvalds",
-        "email": "linus.torvalds@gmail.com",
-        "createAt": "2018-01-03"
-    },
-    {
-        "id": 4,
-        "firstName": "Rasmus",
-        "lastName": "Lerdorf",
-        "email": "rasmus.lerdorf@gmail.com",
-        "createAt": "2018-01-04"
-    }
-    ],
-    "pageable": {
-        "sort": {
-            "empty": true,
-            "sorted": false,
-            "unsorted": true
-        },
-        "offset": 0,
-        "pageNumber": 0,
-        "pageSize": 4,
-        "unpaged": false,
-        "paged": true
-    },
-    "last": false,
-    "totalElements": 11,
-    "totalPages": 3,
-    "size": 4,
-    "number": 0,
-    "sort": {
-        "empty": true,
-        "sorted": false,
-        "unsorted": true
-    },
-    "first": true,
-    "numberOfElements": 4,
-    "empty": false
-}
-```
-
-### Obtener cliente por ID
-
-- **URL**: `/api/customer/:id`
+- **URL**: `/api/book/{id}`
 - **Método**: GET
 - **Cuerpo de la Solicitud:**
 
 ```json
 {
-    "id": 12,
-    "firstName": "Jade",
-    "lastName": "Doe",
-    "email": "jane.doe@gmail.com",
-    "createAt": "2018-03-06"
+  "id": 1,
+  "title": "Harry Potter y la piedra filosofal",
+  "isbn": "isbn1",
+  "publicationDate": "1997-06-26",
+  "publisher": "Bloomsbury",
+  "price": 8000,
+  "quantityInStock": 1000,
+  "coverImageURL": "www.imagen.com.ar",
+  "description": "Se narran los primeros pasos de Harry en el mundo de la magia, así como su primer enfrentamiento con Voldemort, quien en su búsqueda de la inmortalidad quiere obtener el poder de la piedra filosofal y posee al profesor de defensa contra las artes oscuras.",
+  "genre": "fantastic",
+  "languaje": "english",
+  "author": {
+    "id": 1,
+    "firstName": "Joanne",
+    "lastName": "Rowling",
+    "dateOfBirth": "1965-07-31",
+    "nationality": "Reino Unido",
+    "biography": "Es una escritora, productora de cine y guionista británica, conocida por ser la autora de la serie de libros Harry Potter, que han superado los quinientos millones de ejemplares vendidos.",
+    "email": "info@jkrowling.com",
+    "website": "www.jkrowling.com"
+  }
 }
 ```
 
-### Crear cliente
+### Crear book
 
-- **URL**: `/api/customer`
+- **URL**: `/api/books/authors/{authorId}`
 - **Método**: POST
 - **Cuerpo de la Solicitud:**
 
 ```json
 {
-    "firstName": "Jade",
-    "lastName": "Doe",
-    "email": "jane.doe@gmail.com",
-    "createAt": "2018-03-06"
+  "title": "string",
+  "isbn": "string",
+  "publicationDate": "2023-10-17",
+  "publisher": "string",
+  "price": 0,
+  "quantityInStock": 0,
+  "coverImageURL": "string",
+  "description": "string",
+  "genre": "science_fiction",
+  "languaje": "spanish"
 }
 ```
 
-### Actualizar cliente por ID
+### Actualizar book por ID
 
-- **URL**: `/api/customer/:id`
+- **URL**: `/api/books/{bookId}/authors/{authorId}`
 - **Método**: PUT
 - **Cuerpo de la Solicitud:**
 
 ```json
 {
-    "firstName": "Jade",
-    "lastName": "Doe",
-    "email": "jane.doe@gmail.com",
-    "createAt": "2018-03-06"
+  "title": "string",
+  "isbn": "string",
+  "publicationDate": "2023-10-17",
+  "publisher": "string",
+  "price": 0,
+  "quantityInStock": 0,
+  "coverImageURL": "string",
+  "description": "string",
+  "genre": "science_fiction",
+  "languaje": "spanish"
 }
 ```
 
-### Eliminar cliente por ID
+### Eliminar book por ID
 
-- **URL**: `/api/customer/:id`
+- **URL**: `/api/book/:id`
 - **Método**: DELETE
 - **Respuesta exitosa**:
 
 ```json
 {
-    "message": "The customer has been successfully deleted"
+    "message": "The book has been successfully deleted"
 }
 ```
 
